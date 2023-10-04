@@ -18,6 +18,10 @@ download repository then run **`chmod +x buzzkill.sh`**. now you can run it by *
 
 **`firewall`**       set up ufw
 
+**`get-servers`**    display which servers are running
+
+**`login-conf`**     set up configuration for login
+
 **`package-search`** search for terms through installed packages. with no provided arguement it will search for games
 
 **`media-search`**   search for media files in the /home directory
