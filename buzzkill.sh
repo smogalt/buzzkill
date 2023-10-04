@@ -1,21 +1,20 @@
 #!/bin/bash
 
-if [[ $1 == "" ]]; then
-	echo "Invalid arguement:"
-	echo "Try 'buzzkill --help' for more information."
-fi
-
 if [[ $1 == "--help" ]]; then
 	echo -e "Usage: buzzkill [OPTION]"
 	echo -e "buzzkill is a tool for administrative functions such as \nsystem updates, user audits, security configs and more.\n"
 	echo -e "options: "
-	echo -e "\t--help         display this help message"
-	echo -e "\tupdate         update via apt"
-	echo -e "\tfirewall       set up ufw"
+	echo -e "\t--help            display this help message"
+	echo -e "\tadmin-audit       compares list of athorized admins against members of adm group"
+	echo -e "\tfirewall          set up ufw"
+	echo -e "\tget-servers       show all running web servers"
+	echo -e "\tlogin-conf        configures login preferences"
+	echo -e "\tmedia-search      finds all media files in /home directory"
 	echo -e "\tpackage-search    search for games installed with apt"
-	echo -e "\tmedia-search   finds all media files in /home directory"
-	echo -e "\tuser-audit     compares list of allowed users against system users"
-	echo -e "\tadmin-audit    compares list of athorized admins against members of adm group"
+	echo -e "\tupdate            update via apt"
+	echo -e "\tuser-audit        compares list of allowed users against system users"
+
+	exit 0
 fi
 
 if [[ $1 == "update" ]]; then 
@@ -29,15 +28,19 @@ if [[ $1 == "update" ]]; then
 	sudo apt-get autoremove -y >> buzzkill.log
 	sudo apt-get clean -y >> buzzkill.log
 	echo -e "\n\n" >> buzzkill.log
+	exit 0
 fi
 
 if [[ $1 == "firewall" ]]; then
 	# firewall
+	echo "installing firewall..."
+	sudo apt install ufw >> buzzkill.log	
 	echo "turning firewall on..."
 	sudo ufw enable >> buzzkill.log
 	sudo ufw status verbose >> buzzkill.log
 	sudo ufw default deny >> buzzkill.log
 	sudo ufw logging on >> buzzkill.log
+	exit 0
 fi
 
 if [[ $1 == "package-search" ]]; then
@@ -60,6 +63,7 @@ if [[ $1 == "package-search" ]]; then
 		fi
 	done < /tmp/pkgs.tmp
 	rm /tmp/pkgs.tmp
+	exit 0
 fi
 
 # search for media files in /home
@@ -86,6 +90,7 @@ if [[ $1 == "media-search" ]]; then
 	sudo find /home -name "*.webp"
 	sudo find /home -name "*.gif"
 	sudo find /home -name "*.ico"
+	exit 0
 fi
 
 if [[ $1 == "user-audit" ]]; then
@@ -107,6 +112,7 @@ if [[ $1 == "user-audit" ]]; then
 	done < /tmp/users.tmp
 
 	rm /tmp/users.tmp
+	exit 0
 fi
 
 if [[ $1 == "admin-audit" ]]; then
@@ -127,4 +133,24 @@ if [[ $1 == "admin-audit" ]]; then
 	done < /tmp/admins.tmp
 
 	rm /tmp/admins.tmp
+	exit 0
 fi
+
+if [[ $1 = "login-conf" ]]; then
+	sudo echo -e "FAILLOG_ENABLE YES\nLOG_UNKFAIL_ENAB YES\nSYSLOG_SU_ENAB YES\nSYSLOG_SG_ENAB YES\nPASS_MAX_DAYS 90\nPASS_MIN_DAYS 10\nPASS_WARN_AGE 7" >> /etc/login.defs
+	exit 0
+fi
+
+if [[ $1 = "get-servers" ]]; then
+	netstat -tulpn | grep "sshd"
+	netstat -tulpn | grep "samba"
+	netstat -tulpn | grep "apache"
+	netstat -tulpn | grep "nginx"
+	netstat -tulpn | grep "ftp"
+	exit 0
+fi
+
+echo "Invalid arguement:"
+echo "Try 'buzzkill --help' for more information."
+
+exit 0
