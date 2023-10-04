@@ -20,12 +20,12 @@ download repository then run **`chmod +x buzzkill.sh`**. now you can run it by *
 
 **`get-servers`**    display which servers are running
 
-**`login-conf`**     set up configuration for login
-
-**`package-search`** search for terms through installed packages. with no provided arguement it will search for games
+**`package-search`** search for terms through installed packages. with no 
+    provided arguement it will search for games
 
 **`media-search`**   search for media files in the /home directory
 
-**`user-audit`**     find unauthorized users from a list. put users in `users.txt` in the same directory as the program
+**`user-audit`**     find unauthorized users from a list. put users in 
+    `users.txt` in the same directory as the program
 
 **`admin-audit`**    search for unwanted administrators from a file `admins.txt`

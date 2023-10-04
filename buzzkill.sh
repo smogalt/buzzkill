@@ -2,22 +2,24 @@
 
 if [[ $1 == "--help" ]]; then
 	echo -e "Usage: buzzkill [OPTION]"
-	echo -e "buzzkill is a tool for administrative functions such as \nsystem updates, user audits, security configs and more.\n"
+	echo -e "buzzkill is a tool for administrative functions such as \nsystem 
+		updates, user audits, security configs and more.\n"
 	echo -e "options: "
 	echo -e "\t--help            display this help message"
-	echo -e "\tadmin-audit       compares list of athorized admins against members of adm group"
+	echo -e "\tadmin-audit       compares list of athorized admins against 
+		members of adm group"
 	echo -e "\tfirewall          set up ufw"
 	echo -e "\tget-servers       show all running web servers"
-	echo -e "\tlogin-conf        configures login preferences"
 	echo -e "\tmedia-search      finds all media files in /home directory"
 	echo -e "\tpackage-search    search for games installed with apt"
 	echo -e "\tupdate            update via apt"
-	echo -e "\tuser-audit        compares list of allowed users against system users"
+	echo -e "\tuser-audit        compares list of allowed users against 
+		system users"
 
 	exit 0
 fi
 
-if [[ $1 == "update" ]]; then 
+if [[ $1 == "update" ]]; then
 	# system updates
 	echo "updating sources..."
 	sudo apt-get update >> buzzkill.log
@@ -34,7 +36,7 @@ fi
 if [[ $1 == "firewall" ]]; then
 	# firewall
 	echo "installing firewall..."
-	sudo apt install ufw >> buzzkill.log	
+	sudo apt install ufw >> buzzkill.log
 	echo "turning firewall on..."
 	sudo ufw enable >> buzzkill.log
 	sudo ufw status verbose >> buzzkill.log
@@ -47,12 +49,12 @@ if [[ $1 == "package-search" ]]; then
 	# find games
 	apt list --installed > /tmp/pkgs.tmp
 	echo "packages: " >> buzzkill.log
-	
+
 	package="$2"
-	
+
 	if [[ $2 == "" ]]; then
 		package="game"
-	fi 
+	fi
 
 	while IFS= read -r line; do
 		line=${line%%/*}
@@ -70,23 +72,23 @@ fi
 if [[ $1 == "media-search" ]]; then
 	echo "searching for media files..."
 	# audio files
-	sudo find /home -name "*.mp3"  
-	sudo find /home -name "*.wav" 
-	sudo find /home -name "*.ogg" 
-	sudo find /home -name "*.wma" 
+	sudo find /home -name "*.mp3"
+	sudo find /home -name "*.wav"
+	sudo find /home -name "*.ogg"
+	sudo find /home -name "*.wma"
 
 	# video files
-	sudo find /home -name "*.mp4" 
-	sudo find /home -name "*.mov" 
-	sudo find /home -name "*.mkv" 
-	sudo find /home -name "*.wmv" 
+	sudo find /home -name "*.mp4"
+	sudo find /home -name "*.mov"
+	sudo find /home -name "*.mkv"
+	sudo find /home -name "*.wmv"
 
 	# pictures
-	sudo find /home -name "*.jpeg" 
-	sudo find /home -name "*.png" 
-	sudo find /home -name "*.jpg" 
-	sudo find /home -name "*.svg" 
-	sudo find /home -name "*.tif" 
+	sudo find /home -name "*.jpeg"
+	sudo find /home -name "*.png"
+	sudo find /home -name "*.jpg"
+	sudo find /home -name "*.svg"
+	sudo find /home -name "*.tif"
 	sudo find /home -name "*.webp"
 	sudo find /home -name "*.gif"
 	sudo find /home -name "*.ico"
@@ -121,7 +123,7 @@ if [[ $1 == "admin-audit" ]]; then
 	else
 		echo "list of users is needed. put list in \"users.txt\""
 	fi
-	
+
 	grep "sudo" /etc/group | cut -d: -f4 | sed -e $'s/,/\\\n/g' > /tmp/admins.tmp
 
 	while IFS= read -r line; do
@@ -133,11 +135,6 @@ if [[ $1 == "admin-audit" ]]; then
 	done < /tmp/admins.tmp
 
 	rm /tmp/admins.tmp
-	exit 0
-fi
-
-if [[ $1 = "login-conf" ]]; then
-	sudo echo -e "FAILLOG_ENABLE YES\nLOG_UNKFAIL_ENAB YES\nSYSLOG_SU_ENAB YES\nSYSLOG_SG_ENAB YES\nPASS_MAX_DAYS 90\nPASS_MIN_DAYS 10\nPASS_WARN_AGE 7" >> /etc/login.defs
 	exit 0
 fi
 
