@@ -8,6 +8,8 @@ if [[ $1 == "--help" ]]; then
 	echo -e "\t--help            display this help message"
 	echo -e "\tadmin-audit       compares list of athorized admins against 
 		members of adm group"
+	echo -e "\tauto-update       sets up daily updates. don't mess with the
+		config file under 'apt-config'"
 	echo -e "\tfirewall          set up ufw"
 	echo -e "\tget-servers       show all running web servers"
 	echo -e "\tmedia-search      finds all media files in /home directory"
@@ -147,7 +149,15 @@ if [[ $1 = "get-servers" ]]; then
 	exit 0
 fi
 
-echo "Invalid arguement:"
+if [[ $1 = "auto-update" ]]; then
+	sudo cp apt-config /etc/apt/apt.conf.d/10periodic
+fi
+
+if [[ $1 = "ssh-config" ]]; then
+	sudo sed -i -e 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+fi
+
+echo "Invalid argument:"
 echo "Try 'buzzkill --help' for more information."
 
 exit 0
