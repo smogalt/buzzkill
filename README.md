@@ -24,6 +24,6 @@ download repository then run **`chmod +x buzzkill.sh`**. now you can run it by *
 
 **`media-search`**   search for media files in the /home directory
 
-**`user-audit`**     find unauthorized users from a list. put users in `users.txt` in the same directory as the program
+**`user-audit`**     pulls down README from web then checks users against it. provide the address of the README as the second arguement
 
 **`admin-audit`**    search for unwanted administrators from a file `admins.txt`
