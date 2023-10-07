@@ -14,6 +14,8 @@ download repository then run **`chmod +x buzzkill.sh`**. now you can run it by *
 
 **`--help`**         displays help page
 
+**`auto-update`**    enables auto updates for APT
+
 **`update`**         update programs via apt
 
 **`firewall`**       set up ufw
@@ -24,6 +26,6 @@ download repository then run **`chmod +x buzzkill.sh`**. now you can run it by *
 
 **`media-search`**   search for media files in the /home directory
 
-**`user-audit`**     pulls down README from web then checks users against it. provide the address of the README as the second arguement
+**`ssh-config`**     disables root login from ssh
 
-**`admin-audit`**    search for unwanted administrators from a file `admins.txt`
+**`user-audit`**     pulls down README from web then checks users against it. provide the address of the README as the second arguement
