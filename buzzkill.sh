@@ -1,20 +1,32 @@
 #!/bin/bash
 
 if [[ `whoami` != "root" ]]; then
-	echo "need to be root to run"
+	echo "Rerun as root"
 	exit 1
 fi
 
-# remove hacking games 
+echo " ___            _   _ _ _ 
+| _ )_  _ _____| |_(_) | |
+| _ \ || |_ /_ / / / | | |
+|___/\_,_/__/__|_\_\_|_|_|
+                          
+"
+echo "         .' '.            __
+.        .   .           (__\_
+ .         .         . -{{_(|8)
+   ' .  . ' ' .  . '     (__/
+"
+
+# remove hacking tools/games 
 apt --purge -y remove netcat p0f iodine bind9 nfs-kernel-server wireshark fcrackzip squid icecast2 zangband zmap nmapsi4 amule qbot nmap postfix john ophcrack medusa
 
 # update apt
 apt update
-apt full-upgrade
-apt autoremove
+apt full-upgrade -y
+apt autoremove -y 
 
 # ufw
-apt install ufw
+apt install ufw -y
 
 ufw enable
 ufw status verbose
@@ -22,27 +34,36 @@ ufw default deny
 ufw logging on
 
 # media files
+
+echo "░█▀▀░█▀▀░█▀█░█▀▄░█▀▀░█░█░▀█▀░█▀█░█▀▀░░░█▀▀░█▀█░█▀▄░░░█▄█░█▀▀░█▀▄░▀█▀░█▀█░░░
+░▀▀█░█▀▀░█▀█░█▀▄░█░░░█▀█░░█░░█░█░█░█░░░█▀▀░█░█░█▀▄░░░█░█░█▀▀░█░█░░█░░█▀█░░░
+░▀▀▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀░░░▀░░░▀▀▀░▀░▀░░░▀░▀░▀▀▀░▀▀░░▀▀▀░▀░▀░▀░
+░█▀▀░█░█░█▀▀░█▀▀░█░█░░░█▀▀░▀█▀░█░░░█▀▀░█▀▀░░░░▀█▀░█░█░▀█▀
+░█░░░█▀█░█▀▀░█░░░█▀▄░░░█▀▀░░█░░█░░░█▀▀░▀▀█░░░░░█░░▄▀▄░░█░
+░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀░▀░░░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░░░▀░░▀░▀░░▀░
+"
+
 # music
-find /home -name "*.mp3"
-find /home -name "*.wav"
-find /home -name "*.ogg"
-find /home -name "*.wma"
+find /home -name "*.mp3" >> files.txt
+find /home -name "*.wav" >> files.txt
+find /home -name "*.ogg" >> files.txt
+find /home -name "*.wma" >> files.txt
 
 # videos
-find /home -name "*.mp4"
-find /home -name "*.mov"
-find /home -name "*.mkv"
-find /home -name "*.wmv"
+find /home -name "*.mp4" >> files.txt
+find /home -name "*.mov" >> files.txt
+find /home -name "*.mkv" >> files.txt
+find /home -name "*.wmv" >> files.txt
 
 # pictures
-find /home -name "*.jpeg"
-find /home -name "*.png"
-find /home -name "*.jpg"
-find /home -name "*.svg"
-find /home -name "*.tif"
-find /home -name "*.webp"
-find /home -name "*.gif"
-find /home -name "*.ico"
+find /home -name "*.jpeg" >> files.txt
+find /home -name "*.png" >> files.txt
+find /home -name "*.jpg" >> files.txt
+find /home -name "*.svg" >> files.txt
+find /home -name "*.tif" >> files.txt
+find /home -name "*.webp" >> files.txt
+find /home -name "*.gif" >> files.txt
+find /home -name "*.ico" >> files.txt
 
 # user audit
 address=$1
@@ -104,7 +125,8 @@ while IFS= read -r line; do
 	if grep "$line" users.txt >> /dev/null; then
 		echo > /dev/null
 	else
-		echo -e "\t$line"
+		userdel $line
+		echo -e "\t$line removed"
 	fi
 done < /tmp/users.tmp
 rm users.txt
@@ -124,18 +146,30 @@ while IFS= read -r line; do
 	if grep "$line" admins.txt > /dev/null; then
 		echo > /dev/null
 	else
-		echo -e "\t$line"
+		gpasswd --delete $line adm
+		echo -e "\t$line removed from admin"
 	fi
 done < /tmp/admins.tmp
 rm admins.txt
 rm /tmp/admins.tmp
 
+echo "░█▀▀░█░█░█▀█░█░█░▀█▀░█▀█░█▀▀░░░█▀▄░█░█░█▀█░█▀█░▀█▀░█▀█░█▀▀
+░▀▀█░█▀█░█░█░█▄█░░█░░█░█░█░█░░░█▀▄░█░█░█░█░█░█░░█░░█░█░█░█
+░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀▀▀░░░▀░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀░▀░▀▀▀
+░█▀▀░█▀▀░█▀▄░█░█░█▀▀░█▀▄░█▀▀░░░░░░█▀▀░█░█░█▀▀░█▀▀░█░█
+░▀▀█░█▀▀░█▀▄░▀▄▀░█▀▀░█▀▄░▀▀█░░░░░░█░░░█▀█░█▀▀░█░░░█▀▄
+░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀░▀░░░░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀░▀
+░█▀▀░█▀▀░█▀▄░█░█░█▀▀░█▀▄░█▀▀░░░░▀█▀░█░█░▀█▀
+░▀▀█░█▀▀░█▀▄░▀▄▀░█▀▀░█▀▄░▀▀█░░░░░█░░▄▀▄░░█░
+░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀░▀░░░▀░░▀░▀░░▀░
+"
+
 # print some servers
-netstat -tulpn | grep "sshd"
-netstat -tulpn | grep "samba"
-netstat -tulpn | grep "apache"
-netstat -tulpn | grep "nginx"
-netstat -tulpn | grep "ftp"
+netstat -tulpn | grep "sshd" >> servers.txt
+netstat -tulpn | grep "samba" >> servers.txt
+netstat -tulpn | grep "apache" >> servers.txt
+netstat -tulpn | grep "nginx" >> servers.txt
+netstat -tulpn | grep "ftp" >> servers.txt
 
 # auto updates
 sudo cp apt-config /etc/apt/apt.conf.d/10periodic
